@@ -209,23 +209,64 @@ a:hover {
   position: relative;
   min-height: calc(100vh - 60px);
   display: grid;
-  align-content: center;
-  padding: clamp(2.5rem, 8vw, 5rem) clamp(1rem, 4vw, 2.5rem) clamp(3rem, 8vw, 5rem);
+  grid-template-columns: minmax(0, 1.08fr) minmax(260px, 0.92fr);
+  align-items: stretch;
+  padding: 0;
   overflow: hidden;
 }
 
-.hero::before {
-  content: "";
-  position: absolute;
-  inset: auto -10% -20% 40%;
-  height: 70%;
-  background: radial-gradient(circle at center, var(--glow), transparent 65%);
-  pointer-events: none;
+.hero-copy {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 720px;
+  padding: clamp(2.5rem, 8vw, 5rem) clamp(1rem, 4vw, 2.5rem);
 }
 
-.hero-inner {
+.hero-visual {
   position: relative;
-  max-width: 720px;
+  min-height: 100%;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.hero-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  transform: scale(1.04);
+  filter: saturate(1.05) contrast(1.04);
+}
+
+.hero-visual-shade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, var(--bg) 0%, rgba(11, 13, 16, 0.55) 28%, transparent 58%),
+    linear-gradient(180deg, rgba(11, 13, 16, 0.2) 0%, transparent 30%, rgba(11, 13, 16, 0.45) 100%);
+  z-index: 1;
+}
+
+[data-theme="counter"] .hero-visual-shade {
+  background:
+    linear-gradient(90deg, var(--bg) 0%, rgba(244, 246, 248, 0.72) 30%, transparent 62%),
+    linear-gradient(180deg, rgba(244, 246, 248, 0.25) 0%, transparent 35%, rgba(27, 58, 75, 0.18) 100%);
+}
+
+.hero-visual::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  box-shadow: inset 0 0 0 1px var(--line);
+  pointer-events: none;
+  opacity: 0.55;
 }
 
 .brand-mark {
@@ -744,6 +785,12 @@ section {
   animation: rise 0.8s ease forwards;
 }
 
+.hero-visual {
+  opacity: 0;
+  transform: translateX(24px);
+  animation: slide-in 1s ease 0.15s forwards;
+}
+
 .hero h1 {
   animation-delay: 0.12s;
 }
@@ -754,6 +801,13 @@ section {
 
 .hero .cta-row {
   animation-delay: 0.34s;
+}
+
+@keyframes slide-in {
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 @keyframes rise {
@@ -772,15 +826,46 @@ section {
   .hero .brand-mark,
   .hero h1,
   .hero-lead,
-  .hero .cta-row {
+  .hero .cta-row,
+  .hero-visual {
     opacity: 1;
     transform: none;
     animation: none;
     transition: none;
   }
+
+  .hero-video {
+    animation-play-state: paused;
+  }
 }
 
 @media (max-width: 900px) {
+  .hero {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .hero-copy {
+    padding-bottom: 1.5rem;
+  }
+
+  .hero-visual {
+    min-height: min(58vh, 520px);
+    order: -1;
+  }
+
+  .hero-visual-shade {
+    background:
+      linear-gradient(180deg, var(--bg) 0%, transparent 35%, transparent 70%, var(--bg) 100%),
+      linear-gradient(90deg, rgba(11, 13, 16, 0.25), transparent 40%);
+  }
+
+  [data-theme="counter"] .hero-visual-shade {
+    background:
+      linear-gradient(180deg, var(--bg) 0%, transparent 35%, transparent 70%, var(--bg) 100%),
+      linear-gradient(90deg, rgba(244, 246, 248, 0.35), transparent 45%);
+  }
+
   .stat-row {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -814,5 +899,9 @@ section {
 
   .stat-row {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .hero-visual {
+    min-height: 42vh;
   }
 }

@@ -234,6 +234,30 @@
     renderMermaid(theme);
   }
 
+  function initHeroVideo() {
+    const video = document.getElementById("hero-video");
+    if (!video) return;
+
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const syncMotion = () => {
+      if (reduce.matches) {
+        video.pause();
+        video.removeAttribute("autoplay");
+      } else {
+        video.setAttribute("autoplay", "");
+        const play = video.play();
+        if (play && typeof play.catch === "function") play.catch(() => {});
+      }
+    };
+
+    syncMotion();
+    if (typeof reduce.addEventListener === "function") {
+      reduce.addEventListener("change", syncMotion);
+    } else if (typeof reduce.addListener === "function") {
+      reduce.addListener(syncMotion);
+    }
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     initTheme();
     initPipeline();
@@ -241,5 +265,6 @@
     initReveal();
     initSmoothScroll();
     initMermaid();
+    initHeroVideo();
   });
 })();
