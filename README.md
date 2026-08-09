@@ -7,7 +7,7 @@
 [![Pages](https://img.shields.io/badge/GitHub%20Pages-Live-1B3A4B?style=for-the-badge&logo=github)](https://sourojitd.github.io/AIML-Foodhub/)
 
 <p align="center">
-  <img src="docs/assets/typing.svg" alt="FoodHub analysis — EDA, ops, revenue" />
+  <img src="https://raw.githubusercontent.com/sourojitd/AIML-Foodhub/main/docs/assets/typing.svg" alt="FoodHub analysis — EDA, ops, revenue" width="720" />
 </p>
 
 <p align="center">
