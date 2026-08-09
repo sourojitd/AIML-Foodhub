@@ -1039,14 +1039,14 @@ section + section {
 
   .hero-visual {
     inset: 0;
-    /* Fade the media itself out — page atmosphere continues underneath */
-    -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 55%, rgba(0, 0, 0, 0.35) 78%, transparent 100%);
-    mask-image: linear-gradient(180deg, #000 0%, #000 55%, rgba(0, 0, 0, 0.35) 78%, transparent 100%);
+    /* Fade media early so CTAs sit on atmosphere, not a hard video edge */
+    -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 42%, rgba(0, 0, 0, 0.45) 68%, transparent 92%);
+    mask-image: linear-gradient(180deg, #000 0%, #000 42%, rgba(0, 0, 0, 0.45) 68%, transparent 92%);
   }
 
   .hero-video {
     transform: none;
-    object-position: center 32%;
+    object-position: center 28%;
   }
 
   .hero-visual-shade {
@@ -1057,30 +1057,32 @@ section + section {
     min-height: 0;
     max-width: none;
     justify-content: flex-end;
-    padding: 5.25rem 1.25rem 3.5rem;
+    padding: 5rem 1.35rem 5.5rem;
   }
 
   .brand-mark {
-    font-size: clamp(3rem, 14vw, 4.4rem);
-    margin-bottom: 0.85rem;
+    font-size: clamp(2.85rem, 13vw, 4.1rem);
+    margin-bottom: 0.75rem;
   }
 
   .hero h1 {
-    font-size: clamp(1.15rem, 4.6vw, 1.4rem);
+    font-size: clamp(1.12rem, 4.4vw, 1.35rem);
     max-width: 22ch;
   }
 
   .hero-lead {
-    font-size: 0.92rem;
+    font-size: 0.9rem;
     max-width: 34ch;
-    margin-bottom: 1.25rem;
+    margin-bottom: 1.15rem;
   }
 
   .cta-row {
     flex-direction: column;
     align-items: stretch;
-    width: min(100%, 22rem);
+    width: 100%;
+    max-width: 22rem;
     gap: 0.55rem;
+    margin-bottom: 0.5rem;
   }
 
   .cta-row .btn {
@@ -1089,22 +1091,31 @@ section + section {
   }
 
   .hero + #overview {
-    margin-top: -2rem;
-    padding-top: clamp(2.5rem, 6vw, 3.5rem);
+    margin-top: -3.25rem;
+    padding-top: clamp(2.75rem, 7vw, 3.75rem);
     position: relative;
     z-index: 2;
-    border-top: none;
+    border: 0;
     background: transparent;
+  }
+
+  .hero + #overview .section-inner {
+    padding-top: 0.25rem;
   }
 }
 
 @media (max-width: 640px) {
   .nav {
-    padding-inline: 1rem;
+    padding-inline: 1.15rem;
   }
 
   .nav-links {
-    gap: 0.2rem 0.75rem;
+    gap: 0.2rem 0.85rem;
+  }
+
+  .nav-links a {
+    font-size: 0.8rem;
+    padding: 0.35rem 0;
   }
 
   .nav-links .hide-sm {
@@ -1128,7 +1139,7 @@ section + section {
   }
 
   .hero-copy {
-    padding: 4.5rem 1.1rem 4.5rem;
+    padding: 4.5rem 1.25rem 5.25rem;
   }
 
   .dispatch-board {
@@ -1136,6 +1147,6 @@ section + section {
   }
 
   .section-inner {
-    padding-inline: 1.1rem;
+    padding-inline: 1.25rem;
   }
 }
