@@ -24,12 +24,14 @@
       <ul class="nav-links">
         <li class="hide-sm"><a href="#overview" data-scroll>Overview</a></li>
         <li class="hide-sm"><a href="#pipeline" data-scroll>Pipeline</a></li>
-        <li class="hide-sm"><a href="#architecture" data-scroll>Architecture</a></li>
         <li><a href="#topics" data-scroll>Topics</a></li>
         <li><a href="#findings" data-scroll>Findings</a></li>
-        <li><a href="#author" data-scroll>Author</a></li>
+        <li class="hide-sm"><a href="#author" data-scroll>Author</a></li>
         <li>
-          <button type="button" class="theme-toggle" id="theme-toggle" aria-pressed="false">Counter light</button>
+          <button type="button" class="theme-toggle" id="theme-toggle" aria-pressed="false" aria-label="Switch theme">
+            <span class="theme-toggle-dot" aria-hidden="true"></span>
+            <span class="theme-toggle-text">Light</span>
+          </button>
         </li>
       </ul>
     </nav>
@@ -37,6 +39,22 @@
 
   <main id="top">
     <section class="hero" aria-label="Hero">
+      <div class="hero-visual">
+        <video
+          id="hero-video"
+          class="hero-video"
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="auto"
+          aria-label="Food delivery atmosphere video"
+        >
+          <source src="assets/7008570-hd_720_1280_25fps.mp4" type="video/mp4" />
+        </video>
+        <div class="hero-visual-shade" aria-hidden="true"></div>
+      </div>
+
       <div class="hero-copy">
         <p class="brand-mark">Food<em>Hub</em></p>
         <h1>Order data that exposes demand, delivery drag, and margin.</h1>
@@ -47,54 +65,58 @@
           <a class="btn btn-ghost" href="https://github.com/sourojitd/AIML-Foodhub" rel="noopener noreferrer">GitHub</a>
         </div>
       </div>
-      <div class="hero-visual">
-        <video
-          id="hero-video"
-          class="hero-video"
-          autoplay
-          muted
-          loop
-          playsinline
-          preload="metadata"
-          aria-label="Food delivery atmosphere video"
-        >
-          <source src="assets/7008570-hd_720_1280_25fps.mp4" type="video/mp4" />
-        </video>
-        <div class="hero-visual-shade" aria-hidden="true"></div>
-      </div>
     </section>
 
     <section id="overview">
       <div class="section-inner reveal">
-        <p class="section-label">Overview</p>
-        <h2 class="section-title">A food aggregator’s demand map</h2>
-        <p class="section-lede">FoodHub connects customers to restaurants through one app. Prep happens in-kitchen; couriers confirm pickup and drop-off; customers may rate. The business earns a fixed margin on each order.</p>
-        <div class="overview-copy">
-          <p><strong>Role.</strong> As data scientist, I analyzed registered-customer order history to quantify restaurant demand, weekday vs weekend behavior, time-to-door, rating coverage, and commission revenue under the stated fee rules.</p>
-          <p><strong>Why it matters.</strong> Without a clear picture of volume concentration, rating gaps, and SLA outliers, promotions and staffing stay guesswork. This project answers those questions with transparent pandas workflows — not black-box models.</p>
-        </div>
-        <div class="stat-row" aria-label="Dataset snapshot">
-          <div class="stat"><strong>1,898</strong><span>orders analyzed</span></div>
-          <div class="stat"><strong>178</strong><span>restaurants</span></div>
-          <div class="stat"><strong>14</strong><span>cuisine types</span></div>
-          <div class="stat"><strong>1,200</strong><span>unique customers</span></div>
+        <div class="overview-layout">
+          <div class="overview-main">
+            <p class="section-label">Overview</p>
+            <h2 class="section-title">A food aggregator’s demand map</h2>
+            <p class="section-lede">FoodHub connects customers to restaurants through one app. Prep happens in-kitchen; couriers confirm pickup and drop-off; customers may rate. The business earns a fixed margin on each order.</p>
+            <div class="overview-copy">
+              <p><strong>Role.</strong> As data scientist, I analyzed registered-customer order history to quantify restaurant demand, weekday vs weekend behavior, time-to-door, rating coverage, and commission revenue under the stated fee rules.</p>
+              <p><strong>Why it matters.</strong> Without a clear picture of volume concentration, rating gaps, and SLA outliers, promotions and staffing stay guesswork. This project answers those questions with transparent pandas workflows — not black-box models.</p>
+            </div>
+          </div>
+
+          <aside class="dispatch-board" aria-label="Dataset snapshot">
+            <div class="dispatch-head">
+              <span>Dispatch board</span>
+              <span class="dispatch-live">Live snapshot</span>
+            </div>
+            <dl class="dispatch-metrics">
+              <div><dt>Orders</dt><dd>1,898</dd></div>
+              <div><dt>Restaurants</dt><dd>178</dd></div>
+              <div><dt>Cuisines</dt><dd>14</dd></div>
+              <div><dt>Customers</dt><dd>1,200</dd></div>
+            </dl>
+            <div class="dispatch-foot">
+              <p>Weekend share <strong>~71%</strong></p>
+              <p>Null values <strong>0</strong></p>
+            </div>
+          </aside>
         </div>
       </div>
     </section>
 
     <section id="pipeline">
       <div class="section-inner reveal">
-        <p class="section-label">Analysis pipeline</p>
-        <h2 class="section-title">Step through the workflow</h2>
-        <p class="section-lede">Click a stage to see techniques and outcomes from the notebook.</p>
+        <div class="section-head">
+          <div>
+            <p class="section-label">Analysis pipeline</p>
+            <h2 class="section-title">Step through the workflow</h2>
+          </div>
+          <p class="section-lede tight">Click a stage to see techniques and outcomes from the notebook.</p>
+        </div>
         <div class="pipeline">
           <div class="pipeline-steps" role="tablist" aria-label="Pipeline steps">
-            <button type="button" class="pipeline-step" role="tab" data-pipeline-step="load" aria-selected="true"><span class="step-num">01</span>Load &amp; structure</button>
-            <button type="button" class="pipeline-step" role="tab" data-pipeline-step="quality" aria-selected="false"><span class="step-num">02</span>Data quality</button>
-            <button type="button" class="pipeline-step" role="tab" data-pipeline-step="univariate" aria-selected="false"><span class="step-num">03</span>Univariate EDA</button>
-            <button type="button" class="pipeline-step" role="tab" data-pipeline-step="multivariate" aria-selected="false"><span class="step-num">04</span>Multivariate EDA</button>
-            <button type="button" class="pipeline-step" role="tab" data-pipeline-step="business" aria-selected="false"><span class="step-num">05</span>Business questions</button>
-            <button type="button" class="pipeline-step" role="tab" data-pipeline-step="recommend" aria-selected="false"><span class="step-num">06</span>Recommendations</button>
+            <button type="button" class="pipeline-step" role="tab" data-pipeline-step="load" aria-selected="true"><span class="step-num">01</span><span class="step-label">Load</span></button>
+            <button type="button" class="pipeline-step" role="tab" data-pipeline-step="quality" aria-selected="false"><span class="step-num">02</span><span class="step-label">Quality</span></button>
+            <button type="button" class="pipeline-step" role="tab" data-pipeline-step="univariate" aria-selected="false"><span class="step-num">03</span><span class="step-label">Univariate</span></button>
+            <button type="button" class="pipeline-step" role="tab" data-pipeline-step="multivariate" aria-selected="false"><span class="step-num">04</span><span class="step-label">Multivariate</span></button>
+            <button type="button" class="pipeline-step" role="tab" data-pipeline-step="business" aria-selected="false"><span class="step-num">05</span><span class="step-label">Business</span></button>
+            <button type="button" class="pipeline-step" role="tab" data-pipeline-step="recommend" aria-selected="false"><span class="step-num">06</span><span class="step-label">Recommend</span></button>
           </div>
           <div class="pipeline-panel" id="pipeline-panel" role="tabpanel" aria-live="polite"></div>
         </div>
@@ -103,45 +125,52 @@
 
     <section id="architecture">
       <div class="section-inner reveal">
-        <p class="section-label">Architecture</p>
-        <h2 class="section-title">From ticket to insight</h2>
-        <p class="section-lede">Two views: how an order moves through FoodHub, and how the analysis turns that history into decisions.</p>
+        <div class="section-head">
+          <div>
+            <p class="section-label">Architecture</p>
+            <h2 class="section-title">From ticket to insight</h2>
+          </div>
+          <p class="section-lede tight">How an order moves through FoodHub, and how the analysis turns history into decisions.</p>
+        </div>
 
-        <div class="diagram-block">
-          <pre class="mermaid">
+        <div class="diagram-grid">
+          <figure class="diagram-block">
+            <figcaption>Operational lifecycle</figcaption>
+            <pre class="mermaid">
 flowchart LR
-  C[Customer order] --> R[Restaurant confirms]
-  R --> P[Food preparation]
-  P --> D[Courier pickup]
+  C[Customer] --> R[Restaurant]
+  R --> P[Prep]
+  P --> D[Courier]
   D --> X[Drop-off]
-  X --> A[Optional rating]
-  X --> M[Platform margin]
-          </pre>
-        </div>
-        <p class="diagram-caption">Operational lifecycle encoded in the dataset timestamps and rating field.</p>
-
-        <div class="diagram-block">
-          <pre class="mermaid">
+  X --> A[Rating]
+  X --> M[Margin]
+            </pre>
+          </figure>
+          <figure class="diagram-block">
+            <figcaption>Analysis stack</figcaption>
+            <pre class="mermaid">
 flowchart TB
-  CSV[foodhub_order.csv] --> PD[pandas DataFrame]
-  PD --> Q[Quality &amp; dtypes]
-  Q --> U[Univariate EDA]
-  U --> V[Multivariate EDA]
+  CSV[CSV] --> PD[pandas]
+  PD --> Q[Quality]
+  Q --> U[Univariate]
+  U --> V[Multivariate]
   V --> B[Business rules]
-  B --> REC[Conclusions]
-  B --> REV[Commission revenue]
-  B --> PROMO[Promo eligibility]
-          </pre>
+  B --> OUT[Decisions]
+            </pre>
+          </figure>
         </div>
-        <p class="diagram-caption">Analysis architecture — Python Foundations stack: pandas, NumPy, Matplotlib, Seaborn.</p>
       </div>
     </section>
 
     <section id="topics">
       <div class="section-inner reveal">
-        <p class="section-label">Topics</p>
-        <h2 class="section-title">Skills demonstrated in depth</h2>
-        <p class="section-lede">Filter by theme, expand a topic for the method and the takeaway.</p>
+        <div class="section-head">
+          <div>
+            <p class="section-label">Topics</p>
+            <h2 class="section-title">Skills demonstrated in depth</h2>
+          </div>
+          <p class="section-lede tight">Filter by theme, expand a topic for method and takeaway.</p>
+        </div>
 
         <div class="topic-filters" role="group" aria-label="Topic filters">
           <button type="button" class="filter-btn" data-topic-filter="all" aria-pressed="true">All</button>
@@ -221,18 +250,22 @@ flowchart TB
 
     <section id="findings">
       <div class="section-inner reveal">
-        <p class="section-label">Key findings</p>
-        <h2 class="section-title">Numbers that change the plan</h2>
-        <p class="section-lede">All figures come from the completed notebook analysis.</p>
+        <div class="section-head">
+          <div>
+            <p class="section-label">Key findings</p>
+            <h2 class="section-title">Numbers that change the plan</h2>
+          </div>
+          <p class="section-lede tight">All figures come from the completed notebook analysis.</p>
+        </div>
 
-        <div class="findings-grid">
-          <article class="finding">
-            <p class="metric">$16.50</p>
-            <p>Average order cost; most volume sits in the $10–$20 band.</p>
-          </article>
-          <article class="finding">
+        <div class="findings-board">
+          <article class="finding finding-lg">
             <p class="metric">$6,166</p>
             <p>Net commission revenue under 25% / 15% fee tiers.</p>
+          </article>
+          <article class="finding">
+            <p class="metric">$16.50</p>
+            <p>Average order cost; mass in $10–$20.</p>
           </article>
           <article class="finding">
             <p class="metric">10.54%</p>
@@ -240,11 +273,11 @@ flowchart TB
           </article>
           <article class="finding">
             <p class="metric">~5 min</p>
-            <p>Weekday delivery slower than weekend on average.</p>
+            <p>Weekday delivery slower than weekend.</p>
           </article>
           <article class="finding">
             <p class="metric">736</p>
-            <p>Orders with rating “Not given” — feedback coverage gap.</p>
+            <p>Ratings marked “Not given”.</p>
           </article>
           <article class="finding">
             <p class="metric">~71%</p>
@@ -252,17 +285,21 @@ flowchart TB
           </article>
         </div>
 
-        <ul class="insight-list">
-          <li>~80% of orders concentrate in American, Japanese, Italian, and Chinese cuisines — partnership leverage is uneven by design.</li>
-          <li>1,200 customers across 1,898 orders implies repeat behavior worth loyalty targeting.</li>
-          <li>Promo-ready restaurants (count &gt; 50 ratings, mean &gt; 4):</li>
-        </ul>
-        <ul class="promo-list">
-          <li>Shake Shack</li>
-          <li>The Meatball Shop</li>
-          <li>Blue Ribbon Sushi</li>
-          <li>Blue Ribbon Fried Chicken</li>
-        </ul>
+        <div class="insight-row">
+          <ul class="insight-list">
+            <li>~80% of orders concentrate in American, Japanese, Italian, and Chinese cuisines.</li>
+            <li>1,200 customers across 1,898 orders implies repeat behavior worth loyalty targeting.</li>
+          </ul>
+          <div class="promo-panel">
+            <p class="promo-label">Promo-ready partners</p>
+            <ul class="promo-list">
+              <li>Shake Shack</li>
+              <li>The Meatball Shop</li>
+              <li>Blue Ribbon Sushi</li>
+              <li>Blue Ribbon Fried Chicken</li>
+            </ul>
+          </div>
+        </div>
       </div>
     </section>
 

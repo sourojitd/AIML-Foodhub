@@ -81,7 +81,11 @@
   function updateToggleLabel(btn, theme) {
     if (!btn) return;
     btn.setAttribute("aria-pressed", theme === "counter" ? "true" : "false");
-    btn.textContent = theme === "midnight" ? "Counter light" : "Midnight dark";
+    const label = btn.querySelector(".theme-toggle-text");
+    const text = theme === "midnight" ? "Light" : "Dark";
+    if (label) label.textContent = text;
+    else btn.textContent = text;
+    btn.setAttribute("aria-label", theme === "midnight" ? "Switch to light theme" : "Switch to dark theme");
   }
 
   function initPipeline() {
