@@ -18,13 +18,20 @@
   --shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
   --nav-bg: rgba(9, 11, 14, 0.78);
   --chip-bg: rgba(240, 165, 0, 0.12);
-  --scrim: linear-gradient(90deg, #090b0e 0%, rgba(9, 11, 14, 0.92) 38%, rgba(9, 11, 14, 0.35) 68%, transparent 100%);
+  /* Soft text legibility only — keep most of the video visible */
+  --scrim: linear-gradient(
+    90deg,
+    rgba(9, 11, 14, 0.92) 0%,
+    rgba(9, 11, 14, 0.72) 22%,
+    rgba(9, 11, 14, 0.28) 42%,
+    transparent 58%
+  );
   --scrim-mobile: linear-gradient(
     180deg,
-    rgba(9, 11, 14, 0.5) 0%,
-    rgba(9, 11, 14, 0.32) 34%,
-    rgba(9, 11, 14, 0.62) 68%,
-    rgba(9, 11, 14, 0.82) 100%
+    rgba(9, 11, 14, 0.42) 0%,
+    rgba(9, 11, 14, 0.28) 36%,
+    rgba(9, 11, 14, 0.58) 72%,
+    rgba(9, 11, 14, 0.78) 100%
   );
   color-scheme: dark;
 }
@@ -46,13 +53,19 @@
   --shadow: 0 18px 40px rgba(22, 57, 76, 0.1);
   --nav-bg: rgba(238, 242, 245, 0.86);
   --chip-bg: rgba(200, 30, 30, 0.08);
-  --scrim: linear-gradient(90deg, #eef2f5 0%, rgba(238, 242, 245, 0.94) 40%, rgba(238, 242, 245, 0.4) 70%, transparent 100%);
+  --scrim: linear-gradient(
+    90deg,
+    rgba(238, 242, 245, 0.9) 0%,
+    rgba(238, 242, 245, 0.68) 24%,
+    rgba(238, 242, 245, 0.25) 44%,
+    transparent 60%
+  );
   --scrim-mobile: linear-gradient(
     180deg,
-    rgba(238, 242, 245, 0.4) 0%,
-    rgba(238, 242, 245, 0.28) 34%,
-    rgba(238, 242, 245, 0.58) 68%,
-    rgba(238, 242, 245, 0.78) 100%
+    rgba(238, 242, 245, 0.38) 0%,
+    rgba(238, 242, 245, 0.26) 36%,
+    rgba(238, 242, 245, 0.55) 72%,
+    rgba(238, 242, 245, 0.75) 100%
   );
   color-scheme: light;
 }
@@ -166,7 +179,7 @@ code {
   padding: 0.75rem clamp(1rem, 4vw, 2.75rem);
   background: var(--nav-bg);
   backdrop-filter: blur(16px) saturate(1.2);
-  border-bottom: 1px solid var(--line);
+  border-bottom: 0;
 }
 
 .nav-brand {
@@ -236,30 +249,30 @@ code {
   outline-offset: 2px;
 }
 
-/* Hero — one composition: video plane + copy */
+/* Hero — full-bleed video + soft left text scrim (no hard vertical cut) */
 .hero {
   position: relative;
   min-height: calc(100svh - 58px);
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(320px, 46vw);
-  align-items: stretch;
+  display: block;
   overflow: hidden;
+  isolation: isolate;
 }
 
 .hero-visual {
   position: absolute;
-  inset: 0 0 0 42%;
+  inset: 0;
   z-index: 0;
   overflow: hidden;
+  background: #1a1410;
 }
 
 .hero-video {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center center;
-  transform: scale(1.06);
-  filter: saturate(1.08) contrast(1.05);
+  object-position: 62% center;
+  transform: scale(1.03);
+  filter: saturate(1.06) contrast(1.04);
 }
 
 .hero-visual-shade {
@@ -272,12 +285,12 @@ code {
 .hero-copy {
   position: relative;
   z-index: 2;
-  grid-column: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  min-height: calc(100svh - 58px);
   padding: clamp(2.75rem, 9vh, 5rem) clamp(1.25rem, 5vw, 3.5rem);
-  max-width: 640px;
+  max-width: min(36rem, 52%);
 }
 
 .brand-mark {
@@ -967,8 +980,7 @@ section + section {
 }
 
 .hero-visual {
-  opacity: 0;
-  animation: fade-visual 1.1s ease 0.05s forwards;
+  opacity: 1;
 }
 
 @keyframes rise {
@@ -993,8 +1005,7 @@ section + section {
   .hero .brand-mark,
   .hero h1,
   .hero-lead,
-  .hero .cta-row,
-  .hero-visual {
+  .hero .cta-row {
     opacity: 1;
     transform: none;
     animation: none;
@@ -1032,21 +1043,20 @@ section + section {
 
 @media (max-width: 860px) {
   .hero {
-    grid-template-columns: 1fr;
     min-height: 0;
     isolation: isolate;
   }
 
   .hero-visual {
     inset: 0;
-    /* Fade media early so CTAs sit on atmosphere, not a hard video edge */
-    -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 42%, rgba(0, 0, 0, 0.45) 68%, transparent 92%);
-    mask-image: linear-gradient(180deg, #000 0%, #000 42%, rgba(0, 0, 0, 0.45) 68%, transparent 92%);
+    /* Bottom dissolve only — never a vertical cut */
+    -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 48%, rgba(0, 0, 0, 0.5) 72%, transparent 94%);
+    mask-image: linear-gradient(180deg, #000 0%, #000 48%, rgba(0, 0, 0, 0.5) 72%, transparent 94%);
   }
 
   .hero-video {
     transform: none;
-    object-position: center 28%;
+    object-position: center 30%;
   }
 
   .hero-visual-shade {
@@ -1054,8 +1064,9 @@ section + section {
   }
 
   .hero-copy {
-    min-height: 0;
+    min-height: min(86svh, 720px);
     max-width: none;
+    width: 100%;
     justify-content: flex-end;
     padding: 5rem 1.35rem 5.5rem;
   }
