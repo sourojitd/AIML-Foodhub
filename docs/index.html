@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="midnight">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FoodHub Data Analysis — Sourojit Dhua</title>
+  <meta name="description" content="Exploratory analysis of 1,898 FoodHub orders by Sourojit Dhua — demand, delivery ops, ratings, and commission revenue." />
+  <meta name="author" content="Sourojit Dhua" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js" defer></script>
+  <script src="assets/app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#overview">Skip to content</a>
+  <div class="page-bg" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <header class="nav">
+    <a class="nav-brand" href="#top">Food<span>Hub</span></a>
+    <nav aria-label="Primary">
+      <ul class="nav-links">
+        <li class="hide-sm"><a href="#overview" data-scroll>Overview</a></li>
+        <li class="hide-sm"><a href="#pipeline" data-scroll>Pipeline</a></li>
+        <li class="hide-sm"><a href="#architecture" data-scroll>Architecture</a></li>
+        <li><a href="#topics" data-scroll>Topics</a></li>
+        <li><a href="#findings" data-scroll>Findings</a></li>
+        <li><a href="#author" data-scroll>Author</a></li>
+        <li>
+          <button type="button" class="theme-toggle" id="theme-toggle" aria-pressed="false">Counter light</button>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero" aria-label="Hero">
+      <div class="hero-inner">
+        <p class="brand-mark">Food<em>Hub</em></p>
+        <h1>Order data that exposes demand, delivery drag, and margin.</h1>
+        <p class="hero-lead">EDA on 1,898 New York FoodHub orders — built by Sourojit Dhua to turn raw tickets into partnership and ops decisions.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#pipeline" data-scroll>Explore analysis</a>
+          <a class="btn btn-secondary" href="../index.html">View notebook</a>
+          <a class="btn btn-ghost" href="https://github.com/sourojitd/AIML-Foodhub" rel="noopener noreferrer">GitHub</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="overview">
+      <div class="section-inner reveal">
+        <p class="section-label">Overview</p>
+        <h2 class="section-title">A food aggregator’s demand map</h2>
+        <p class="section-lede">FoodHub connects customers to restaurants through one app. Prep happens in-kitchen; couriers confirm pickup and drop-off; customers may rate. The business earns a fixed margin on each order.</p>
+        <div class="overview-copy">
+          <p><strong>Role.</strong> As data scientist, I analyzed registered-customer order history to quantify restaurant demand, weekday vs weekend behavior, time-to-door, rating coverage, and commission revenue under the stated fee rules.</p>
+          <p><strong>Why it matters.</strong> Without a clear picture of volume concentration, rating gaps, and SLA outliers, promotions and staffing stay guesswork. This project answers those questions with transparent pandas workflows — not black-box models.</p>
+        </div>
+        <div class="stat-row" aria-label="Dataset snapshot">
+          <div class="stat"><strong>1,898</strong><span>orders analyzed</span></div>
+          <div class="stat"><strong>178</strong><span>restaurants</span></div>
+          <div class="stat"><strong>14</strong><span>cuisine types</span></div>
+          <div class="stat"><strong>1,200</strong><span>unique customers</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="pipeline">
+      <div class="section-inner reveal">
+        <p class="section-label">Analysis pipeline</p>
+        <h2 class="section-title">Step through the workflow</h2>
+        <p class="section-lede">Click a stage to see techniques and outcomes from the notebook.</p>
+        <div class="pipeline">
+          <div class="pipeline-steps" role="tablist" aria-label="Pipeline steps">
+            <button type="button" class="pipeline-step" role="tab" data-pipeline-step="load" aria-selected="true"><span class="step-num">01</span>Load &amp; structure</button>
+            <button type="button" class="pipeline-step" role="tab" data-pipeline-step="quality" aria-selected="false"><span class="step-num">02</span>Data quality</button>
+            <button type="button" class="pipeline-step" role="tab" data-pipeline-step="univariate" aria-selected="false"><span class="step-num">03</span>Univariate EDA</button>
+            <button type="button" class="pipeline-step" role="tab" data-pipeline-step="multivariate" aria-selected="false"><span class="step-num">04</span>Multivariate EDA</button>
+            <button type="button" class="pipeline-step" role="tab" data-pipeline-step="business" aria-selected="false"><span class="step-num">05</span>Business questions</button>
+            <button type="button" class="pipeline-step" role="tab" data-pipeline-step="recommend" aria-selected="false"><span class="step-num">06</span>Recommendations</button>
+          </div>
+          <div class="pipeline-panel" id="pipeline-panel" role="tabpanel" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="architecture">
+      <div class="section-inner reveal">
+        <p class="section-label">Architecture</p>
+        <h2 class="section-title">From ticket to insight</h2>
+        <p class="section-lede">Two views: how an order moves through FoodHub, and how the analysis turns that history into decisions.</p>
+
+        <div class="diagram-block">
+          <pre class="mermaid">
+flowchart LR
+  C[Customer order] --> R[Restaurant confirms]
+  R --> P[Food preparation]
+  P --> D[Courier pickup]
+  D --> X[Drop-off]
+  X --> A[Optional rating]
+  X --> M[Platform margin]
+          </pre>
+        </div>
+        <p class="diagram-caption">Operational lifecycle encoded in the dataset timestamps and rating field.</p>
+
+        <div class="diagram-block">
+          <pre class="mermaid">
+flowchart TB
+  CSV[foodhub_order.csv] --> PD[pandas DataFrame]
+  PD --> Q[Quality &amp; dtypes]
+  Q --> U[Univariate EDA]
+  U --> V[Multivariate EDA]
+  V --> B[Business rules]
+  B --> REC[Conclusions]
+  B --> REV[Commission revenue]
+  B --> PROMO[Promo eligibility]
+          </pre>
+        </div>
+        <p class="diagram-caption">Analysis architecture — Python Foundations stack: pandas, NumPy, Matplotlib, Seaborn.</p>
+      </div>
+    </section>
+
+    <section id="topics">
+      <div class="section-inner reveal">
+        <p class="section-label">Topics</p>
+        <h2 class="section-title">Skills demonstrated in depth</h2>
+        <p class="section-lede">Filter by theme, expand a topic for the method and the takeaway.</p>
+
+        <div class="topic-filters" role="group" aria-label="Topic filters">
+          <button type="button" class="filter-btn" data-topic-filter="all" aria-pressed="true">All</button>
+          <button type="button" class="filter-btn" data-topic-filter="eda" aria-pressed="false">EDA</button>
+          <button type="button" class="filter-btn" data-topic-filter="ops" aria-pressed="false">Ops</button>
+          <button type="button" class="filter-btn" data-topic-filter="biz" aria-pressed="false">Business logic</button>
+          <button type="button" class="filter-btn" data-topic-filter="viz" aria-pressed="false">Visualization</button>
+        </div>
+
+        <div class="topic-list">
+          <article class="topic" data-topic data-tags="eda">
+            <button type="button" class="topic-trigger" aria-expanded="false">Data profiling &amp; type awareness <span class="chev">▾</span></button>
+            <div class="topic-body">
+              <span class="tag">EDA</span>
+              <p>Used <code>shape</code>, <code>info()</code>, and null audits to confirm a complete 1,898×9 frame. Called out that casting high-cardinality object columns to <code>category</code> would shrink memory if the table grew — engineering judgment beyond the homework checklist.</p>
+            </div>
+          </article>
+
+          <article class="topic" data-topic data-tags="eda">
+            <button type="button" class="topic-trigger" aria-expanded="false">Sentinel ratings vs missingness <span class="chev">▾</span></button>
+            <div class="topic-body">
+              <span class="tag">EDA</span>
+              <p>“Not given” is stored as a string, not NaN. Treating it as a category preserves signal about feedback coverage (736 orders / ~38.7%). Numeric rating averages were computed only after filtering non-numeric values — avoiding silent coercion bugs.</p>
+            </div>
+          </article>
+
+          <article class="topic" data-topic data-tags="eda viz">
+            <button type="button" class="topic-trigger" aria-expanded="false">Univariate distribution reading <span class="chev">▾</span></button>
+            <div class="topic-body">
+              <span class="tag">Visualization</span>
+              <p>Histograms and boxplots show cost slightly right-skewed with most tickets in the $10–$20 band; prep tightly ranged 20–35 minutes (mean ≈ median ≈ 27). Countplots surface American / Shake Shack concentration and weekend dominance (~71%).</p>
+            </div>
+          </article>
+
+          <article class="topic" data-topic data-tags="ops viz">
+            <button type="button" class="topic-trigger" aria-expanded="false">Weekday vs weekend delivery drag <span class="chev">▾</span></button>
+            <div class="topic-body">
+              <span class="tag">Ops</span>
+              <p>Boxplots by <code>day_of_the_week</code> show weekend mean delivery just over ~22.5 minutes vs weekday more than five minutes slower — a staffing / traffic lever, not a cuisine effect. Weekend IQR is wider under higher volume.</p>
+            </div>
+          </article>
+
+          <article class="topic" data-topic data-tags="ops">
+            <button type="button" class="topic-trigger" aria-expanded="false">End-to-end time SLA <span class="chev">▾</span></button>
+            <div class="topic-body">
+              <span class="tag">Ops</span>
+              <p>Derived total time as prep + delivery. <strong>10.54%</strong> of orders (200) exceed 60 minutes — a concrete outlier set for restaurant and route review rather than a vague “slow deliveries” complaint.</p>
+            </div>
+          </article>
+
+          <article class="topic" data-topic data-tags="biz">
+            <button type="button" class="topic-trigger" aria-expanded="false">Promo eligibility with groupby filters <span class="chev">▾</span></button>
+            <div class="topic-body">
+              <span class="tag">Business logic</span>
+              <p>Grouped by restaurant, aggregated rating count and mean, then filtered <code>rating_count &gt; 50</code> and <code>avg_rating &gt; 4</code>. Qualifiers: Shake Shack, The Meatball Shop, Blue Ribbon Sushi, Blue Ribbon Fried Chicken — a transparent partnership shortlist.</p>
+            </div>
+          </article>
+
+          <article class="topic" data-topic data-tags="biz">
+            <button type="button" class="topic-trigger" aria-expanded="false">Tiered commission revenue model <span class="chev">▾</span></button>
+            <div class="topic-body">
+              <span class="tag">Business logic</span>
+              <p>Applied fee rules vectorized with boolean masks: 25% when cost &gt; $20, 15% when cost &gt; $5 and ≤ $20. Net platform surcharge revenue: <strong>$6,166.30</strong>. Orders ≤ $5 contribute $0 under the stated policy — important for upsell design.</p>
+            </div>
+          </article>
+
+          <article class="topic" data-topic data-tags="eda viz">
+            <button type="button" class="topic-trigger" aria-expanded="false">Correlation humility <span class="chev">▾</span></button>
+            <div class="topic-body">
+              <span class="tag">EDA</span>
+              <p>Heatmap across cost, prep, and delivery shows no strong linear relationships. Scatter views likewise fail to show delivery time alone driving ratings — a useful check against overfitted “faster = happier” narratives without richer features.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="findings">
+      <div class="section-inner reveal">
+        <p class="section-label">Key findings</p>
+        <h2 class="section-title">Numbers that change the plan</h2>
+        <p class="section-lede">All figures come from the completed notebook analysis.</p>
+
+        <div class="findings-grid">
+          <article class="finding">
+            <p class="metric">$16.50</p>
+            <p>Average order cost; most volume sits in the $10–$20 band.</p>
+          </article>
+          <article class="finding">
+            <p class="metric">$6,166</p>
+            <p>Net commission revenue under 25% / 15% fee tiers.</p>
+          </article>
+          <article class="finding">
+            <p class="metric">10.54%</p>
+            <p>Orders with prep + delivery over 60 minutes.</p>
+          </article>
+          <article class="finding">
+            <p class="metric">~5 min</p>
+            <p>Weekday delivery slower than weekend on average.</p>
+          </article>
+          <article class="finding">
+            <p class="metric">736</p>
+            <p>Orders with rating “Not given” — feedback coverage gap.</p>
+          </article>
+          <article class="finding">
+            <p class="metric">~71%</p>
+            <p>Orders placed on weekends.</p>
+          </article>
+        </div>
+
+        <ul class="insight-list">
+          <li>~80% of orders concentrate in American, Japanese, Italian, and Chinese cuisines — partnership leverage is uneven by design.</li>
+          <li>1,200 customers across 1,898 orders implies repeat behavior worth loyalty targeting.</li>
+          <li>Promo-ready restaurants (count &gt; 50 ratings, mean &gt; 4):</li>
+        </ul>
+        <ul class="promo-list">
+          <li>Shake Shack</li>
+          <li>The Meatball Shop</li>
+          <li>Blue Ribbon Sushi</li>
+          <li>Blue Ribbon Fried Chicken</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="author">
+      <div class="section-inner reveal">
+        <div class="author">
+          <div>
+            <p class="section-label">Author</p>
+            <h2>Sourojit Dhua</h2>
+            <p>Data science &amp; Python analysis. This FoodHub project demonstrates end-to-end EDA, business-rule modeling, and decision-ready storytelling on real delivery operations data.</p>
+          </div>
+          <div class="author-actions">
+            <a class="btn btn-primary" href="https://github.com/sourojitd" rel="noopener noreferrer">GitHub profile</a>
+            <a class="btn btn-secondary" href="https://github.com/sourojitd/AIML-Foodhub" rel="noopener noreferrer">Repository</a>
+            <a class="btn btn-ghost" href="../Learner_Notebook_Full_Code_Sourojit_Dhua.ipynb">Notebook</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <p>© Sourojit Dhua · FoodHub Data Analysis · Python · pandas · Matplotlib · Seaborn</p>
+      <p>
+        <a href="https://github.com/sourojitd/AIML-Foodhub">Repo</a>
+        ·
+        <a href="../index.html">Notebook HTML</a>
+        ·
+        <a href="https://sourojitd.github.io/AIML-Foodhub/">Pages</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>
