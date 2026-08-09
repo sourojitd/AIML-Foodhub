@@ -21,10 +21,10 @@
   /* Soft text legibility only — keep most of the video visible */
   --scrim: linear-gradient(
     90deg,
-    rgba(9, 11, 14, 0.92) 0%,
-    rgba(9, 11, 14, 0.72) 22%,
-    rgba(9, 11, 14, 0.28) 42%,
-    transparent 58%
+    rgba(9, 11, 14, 0.78) 0%,
+    rgba(9, 11, 14, 0.4) 24%,
+    rgba(9, 11, 14, 0.1) 38%,
+    transparent 48%
   );
   --scrim-mobile: linear-gradient(
     180deg,
@@ -55,10 +55,10 @@
   --chip-bg: rgba(200, 30, 30, 0.08);
   --scrim: linear-gradient(
     90deg,
-    rgba(238, 242, 245, 0.9) 0%,
-    rgba(238, 242, 245, 0.68) 24%,
-    rgba(238, 242, 245, 0.25) 44%,
-    transparent 60%
+    rgba(238, 242, 245, 0.78) 0%,
+    rgba(238, 242, 245, 0.38) 26%,
+    rgba(238, 242, 245, 0.1) 40%,
+    transparent 50%
   );
   --scrim-mobile: linear-gradient(
     180deg,
@@ -270,9 +270,9 @@ code {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 62% center;
-  transform: scale(1.03);
-  filter: saturate(1.06) contrast(1.04);
+  object-position: center 40%;
+  transform: scale(1.02);
+  filter: saturate(1.08) contrast(1.06) brightness(1.06);
 }
 
 .hero-visual-shade {
@@ -290,7 +290,7 @@ code {
   justify-content: center;
   min-height: calc(100svh - 58px);
   padding: clamp(2.75rem, 9vh, 5rem) clamp(1.25rem, 5vw, 3.5rem);
-  max-width: min(36rem, 52%);
+  max-width: min(34rem, 46%);
 }
 
 .brand-mark {
@@ -303,6 +303,13 @@ code {
   margin: 0 0 1.1rem;
   color: var(--ink);
   text-wrap: balance;
+  text-shadow: 0 2px 28px rgba(0, 0, 0, 0.35);
+}
+
+[data-theme="counter"] .brand-mark,
+[data-theme="counter"] .hero h1,
+[data-theme="counter"] .hero-lead {
+  text-shadow: 0 1px 18px rgba(255, 255, 255, 0.55);
 }
 
 .brand-mark em {
